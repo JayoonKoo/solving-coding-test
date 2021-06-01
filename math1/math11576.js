@@ -3,19 +3,21 @@
 let input = ['17 8', '2', '2 16'];
 
 const sol = (input) => {
-  t = input.shift().split(' ');
-  before = t[0];
-  after = t[1];
+  const [A, B] = input[0].split(' ').map(Number);
+  const M = Number(input[1]);
+  const arr = input[2].split(' ').map(Number);
+  const result = [];
 
-  count = input.shift();
-  input = input[0].split(' ');
-  
-  target = 0;
-  for (let i = 1; i <= count; i++) {
-    target += input[i-1] * before**(count - i);
+  let temp = 0;
+  for (let i = 0, e = M - 1; i < M; i++, e--) {
+    temp += arr[i] * (A**e);
   }
-  answer = target.toString(after);
-  return answer;
+
+  while (temp) {
+    result.push(temp % B);
+    temp = parseInt(temp / B);
+  }
+  return result;
 }
 
-console.log(sol(input).split('').join(' '));
+console.log(sol(input).reverse().join(' '));
