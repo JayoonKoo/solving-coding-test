@@ -9,7 +9,7 @@ const sol = (input) => {
 
   count = input.shift();
   input = input[0].split(' ');
-
+  
   target = 0;
   for (let i = 1; i <= count; i++) {
     target += input[i-1] * before**(count - i);
