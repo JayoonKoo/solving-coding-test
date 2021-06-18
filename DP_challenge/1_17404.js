@@ -8,46 +8,30 @@ let input = [`3
 
 const sol = (input) => {
 	const N = +input[0];
-	initInput = input[1].split(' ').map(e=>+e);
 	d = [];
-	dRev = [];
+
 	for (let i =0; i<=N; i++) {
 		d.push(new Array(3).fill(0));
-		dRev.push(new Array(3).fill(0));
 	}
-	d[1] = initInput;
-	dRev[N] = input[N].split(' ').map(e=>+e);
-
-	lastMinIndx = dRev[N].indexOf(Math.min(...dRev[N]));
-	firstMinIndex = initInput.indexOf(Math.min(...initInput));
-
-	for (let i = 2; i<=N; i++) {
-		target = input[i].split(' ').map(e=>+e);
-		d[i][0] = target[0] + Math.min(d[i-1][1], d[i-1][2]);
-		d[i][1] = target[1] + Math.min(d[i-1][0], d[i-1][2]);
-		d[i][2] = target[2] + Math.min(d[i-1][1], d[i-1][0]);
-	}
-
-	for (let i = N-1; i>=1; i--) {
-		target = input[i].split(' ').map(e=>+e);
-		dRev[i][0] = target[0] + Math.min(dRev[i+1][1], dRev[i+1][2]);
-		dRev[i][1] = target[1] + Math.min(dRev[i+1][0], dRev[i+1][2]);
-		dRev[i][2] = target[2] + Math.min(dRev[i+1][1], dRev[i+1][0]);
-	}
-
-	indexArr = [0, 1, 2];
-	targetIndx = indexArr.filter(e=> e !== firstMinIndex);
-	lastTargetIndex = indexArr.filter(e=> e!== lastMinIndx);
 
 	ansArr = [];
-	ansTargeArr = [];
-	targetIndx.forEach(i => ansTargeArr.push(d[N][i]));
-	ansArr.push(Math.min(...ansTargeArr));
 
-	ansTargeArr = [];
-	lastTargetIndex.forEach(i => ansTargeArr.push(dRev[1][i]));
-	ansArr.push(Math.min(...ansTargeArr));
-	
+	for (let i = 0; i<3; i++) {
+		d[1] = [10000, 10000, 10000];
+		let A = input[1].split(' ').map(e=>+e);
+		d[1][i] = A[i];
+		
+		for (let j=2; j<=N; j++) {
+			A = input[j].split(' ').map(e=>+e);
+			d[j][0] = Math.min(d[j-1][1], d[j-1][2]) + A[0];
+			d[j][1] = Math.min(d[j-1][0], d[j-1][2]) + A[1];
+			d[j][2] = Math.min(d[j-1][0], d[j-1][1]) + A[2];
+		}
+
+		target = d[N].filter((e,index) => index != i);
+		ansArr.push(Math.min(...target));
+	}
+
 	return Math.min(...ansArr);
 }
 
